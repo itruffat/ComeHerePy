@@ -1,0 +1,6 @@
+name: ComeHere interpreter
+category: Esolanguage-stuff
+skip: True
+description : | 
+  Based on the ComeHere esoteric language, I coded a quick parser and interpreter in Python. There are plans to extend 
+  it into my own version in the future. 
