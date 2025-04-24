@@ -1,6 +1,7 @@
 from v0.ast_parser.lexer import tokens
+from v0.ast_parser.nodes import (
+    Call, Ask, Comment, SimpleStatement, NumberedStatement, Tell, ComeFrom, BinaryOp, UnaryOp, Const, Var)
 from v0.misc.string_aux import encode_string
-from v0.ast_parser.Nodes import *
 import ply.yacc as yacc
 
 

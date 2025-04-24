@@ -1,7 +1,8 @@
 from collections import defaultdict
 
 from v0.ast_parser.lexer import lexer
-from v0.ast_parser.parser import NumberedStatement, SimpleStatement, ComeFrom, parser
+from v0.ast_parser.parser import parser
+from v0.ast_parser.nodes import NumberedStatement, SimpleStatement, ComeFrom
 from v0.linked_statements import LinkedStatement
 from v0.evaluator import evaluate_expression
 

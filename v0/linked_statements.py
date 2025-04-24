@@ -1,6 +1,6 @@
 from typing import Optional
 
-from v0.ast_parser.parser import (Statement, NumberedStatement, SimpleStatement, ComeFrom, BinaryOp, UnaryOp, Var)
+from v0.ast_parser.nodes import (Statement, NumberedStatement, SimpleStatement, ComeFrom, BinaryOp, UnaryOp, Var)
 
 
 class LinkedStatement(Statement):

@@ -1,7 +1,7 @@
 from abc import abstractmethod, ABC
 
 from v0.misc.string_aux import decode_string, encode_string
-from v0.ast_parser.parser import (Statement, ComeFrom, Call, BinaryOp, UnaryOp, Var, Const, Ask, Tell, Comment)
+from v0.ast_parser.nodes import (Statement, ComeFrom, Call, BinaryOp, UnaryOp, Var, Const, Ask, Tell, Comment)
 
 def evaluate_expression(expr, vars_dict):
     match expr:
