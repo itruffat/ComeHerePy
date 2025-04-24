@@ -1,6 +1,7 @@
 name: ComeHere interpreter
 category: Esolanguage-stuff
-skip: True
+skip: False
 description : | 
-  Based on the ComeHere esoteric language, I coded a quick parser and interpreter in Python. There are plans to extend 
-  it into my own version in the future. 
+  This is an interpreter for ComeHere, an esoteric programming language built around a fascinating concept: reversing 
+  the traditional GOTO statement into the only means of controlling program flow. V1 — with my custom modifications — is 
+  still a WIP.

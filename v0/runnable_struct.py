@@ -1,8 +1,9 @@
 from collections import defaultdict
 
-from v0.lexer import lexer
-from v0.parser import NumberedStatement, SimpleStatement, ComeFrom, parser
-from v0.linked_statements import LinkedStatement, evaluate_expression
+from v0.ast_parser.lexer import lexer
+from v0.ast_parser.parser import NumberedStatement, SimpleStatement, ComeFrom, parser
+from v0.linked_statements import LinkedStatement
+from v0.evaluator import evaluate_expression
 
 def _link_statements(statements:list[NumberedStatement | SimpleStatement], with_faux:bool = True):
     linkeds = []

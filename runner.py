@@ -2,8 +2,8 @@ import os
 import sys
 
 from v0.runnable_struct import source_into_runnable_struct
-from v0.linked_statements import evaluate_expression, evaluate_statement, LinkedStatement
-
+from v0.linked_statements import LinkedStatement
+from v0.evaluator import evaluate_expression, evaluate_statement
 
 def run_line(line_number, lines:dict[int|str, LinkedStatement], comefroms, variables, update_triggers):
     line = lines[line_number]
@@ -15,7 +15,7 @@ def run_line(line_number, lines:dict[int|str, LinkedStatement], comefroms, varia
         new_value = evaluate_expression(lines[to_change].body.expr, variables)
         comefroms[to_change] = new_value
         if new_value not in lines.keys():
-            raise Exception("Invalid value")
+            raise Exception("Invalid label to jump from")
         new_value_found |= old_value != comefroms[to_change]
 
 def move_pointer_forward(line_number, lines, comefroms, end_point):
@@ -28,10 +28,16 @@ def move_pointer_forward(line_number, lines, comefroms, end_point):
         if line_number == values:
             jump_to = key
             if found_one:
-                raise Exception("Multi jump")
+                raise Exception("Multi Comefroms asking for a jump")
             found_one = True
     return jump_to
 
+def run(source):
+    points, lines, comefroms, variables, update_triggers = source_into_runnable_struct(source)
+    pointer = points[0]
+    while pointer is not None:
+        run_line(pointer, lines, comefroms, variables, update_triggers)
+        pointer = move_pointer_forward(pointer, lines, comefroms, points[1])
 
 def get_file_path_from_args():
     if len(sys.argv) < 2:
@@ -46,17 +52,10 @@ def get_file_path_from_args():
 
     return file_path
 
-
 if __name__ == "__main__":
     code_path = get_file_path_from_args()
     with open(code_path, "r") as code_file:
         code = code_file.read()
-    points, lines, comefroms, variables, update_triggers = source_into_runnable_struct(code)
-    pointer = points[0]
-    while pointer is not None:
-        run_line(pointer, lines, comefroms, variables, update_triggers)
-        pointer = move_pointer_forward(pointer, lines, comefroms, points[1])
-
-
+    run(code)
 
 
