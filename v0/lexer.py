@@ -44,7 +44,7 @@ def t_NEXT(t):
     return t
 
 def t_VAR(t):
-    r'[a-zA-Z_][a-zA-Z0-9_]*'
+    r'[a-z][a-z0-9_]*'
     return t
 
 def t_MISC(t):
