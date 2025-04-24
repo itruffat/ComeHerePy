@@ -1,3 +1,4 @@
+from abc import abstractmethod, ABC
 from typing import Optional
 
 from v0.string_aux import decode_string, encode_string
@@ -8,10 +9,13 @@ from v0.parser import (Statement, NumberedStatement, SimpleStatement, ComeFrom, 
 class LinkedStatement(Statement):
 
     def __init__(self, source: NumberedStatement| SimpleStatement,
-                 previous: Optional[NumberedStatement| SimpleStatement]):
+                 previous: Optional[NumberedStatement| SimpleStatement],
+                 with_faux_number: Optional[int] = None):
 
         if hasattr(source, "number"):
             self.number = source.number
+        elif with_faux_number:
+            self.number = f"Faux_{with_faux_number}"
         elif previous and hasattr(previous, "number"):
             self.number = previous.number + 1
         else:
@@ -80,18 +84,44 @@ def evaluate_expression(expr, vars_dict):
         case _:
             raise TypeError(f"Unsupported expression type: {type(expr)}")
 
-def evaluate_statement(stmt: Statement, vars_dict: dict[str, list[int] | int | float]):
+
+class IONamespace(ABC):
+    @abstractmethod
+    def read(self):
+        pass
+
+    @abstractmethod
+    def write(self, data):
+        pass
+
+    @abstractmethod
+    def comment(self, data):
+        pass
+
+class DefaultIONamespace(IONamespace):
+    def read(self):
+        return input()
+
+    def write(self, data):
+        print(data)
+
+    def comment(self, data):
+        pass
+
+defaultIO = DefaultIONamespace()
+
+def evaluate_statement(stmt: Statement, vars_dict: dict[str, list[int] | int | float], io:IONamespace = defaultIO):
     match stmt.body:
         case Ask(var=var_name):
             if var_name in vars_dict:
-                vars_dict[var_name] = encode_string(input())
+                vars_dict[var_name] = encode_string(io.read())
             else:
                 raise ValueError(f"Variable '{var_name}' not found")
             return var_name
 
         case Tell(exprs=exprs):
             output = [decode_string(evaluate_expression(expr, vars_dict)) for expr in exprs]
-            print(''.join(output))
+            io.write(''.join(output))
             return None
 
         case Call(var=var_name, expr=expr):

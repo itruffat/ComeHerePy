@@ -1,6 +1,6 @@
 # Come Here! (Python Interpreter)
 
-## <Warning! Code not finished or tested!>
+## Warning: this is an early release. May need further testing.
 
 ## Introduction 
 
@@ -33,13 +33,15 @@ from perfect. It can be found inside the `v0` folder.
 As personal opinions,there are a handful of things I don't completely love about the language, and would probably change
 if I ever design a `v1` of my own.
 
-* String-formatting is outright awful. Using a power-based encoding means your upper limit is around 1786 characters in 
-  modern implementations of Python. Trying to extract a single character from a string implies multiples operations.
-* Linked to the point above, it lacks any way of indirectly making any references to a variable or any way to create a 
-  list. This means that if you want to handle potentially big inputs (such as parsing a File), there can be no practical
-  way to storage and handle them.
-  * There is a solution, but it's incredibly ugly and would probably require a library of its own to be used properly. 
-    By defining a variable for each potential entry of an array (`array_item0`, `array_item1` ... `array_item_n`) and 
-    then creating a `comehere` logic that lets you write/read items depending on an `<x>` value, then you could work 
-    like that. Sounds like a lot of over-head for something that should be fairly trivial.
-* No instruction to ask for a single character, the READ input reads always from a line.
+* Non-named lines do not count for the `comehere`. This turns line-numbers into boring `labels` and reduce potential 
+  syntaxis simplicity by making the line number implicitly increase.
+* List and array support is unnecessary lack-luster.
+  * String-formatting is outright awful. Using a power-based encoding means your upper limit is around 1786 characters 
+  in modern implementations of Python. Trying to extract a single character from a string implies multiples operations.
+  * It lacks any way of indirectly making any references to a variable or any way to create a list. This means that if 
+  you want to handle potentially big inputs (such as parsing a File), there can be no practical way to storage and 
+  handle them.
+  * While there are some workarounds for this solution, but I can not think of a single one that's not ugly and would 
+  probably need a framework to work properly.
+* Lacks an instruction to read a single char from the input, the `READ` input reads always reads a full line.
+* The `NEXT` keyword is weird and somewhat unnecessary. Would probably remove it if able. 

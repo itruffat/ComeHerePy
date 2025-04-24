@@ -42,7 +42,7 @@ def p_program(p):
     p[0] = p[1]
 
 def p_statements(p):
-    '''statements : statements NEXT statement
+    '''statements : statements NEWLINE statement
                   | statement'''
     p[0] = [p[1]] if len(p) == 2 else p[1] + [p[3]]
 
@@ -65,11 +65,17 @@ def p_statement_body(p):
     p[0] = p[1]
 
 def p_comment_single(p):
-    '''comment : NOTE VAR'''
+    '''comment : NOTE VAR
+               | NOTE MISC
+               | NOTE NUMBER
+               | NOTE STRING'''
     p[0] = Comment([p[2]])
 
 def p_comment_chain(p):
-    '''comment : comment VAR'''
+    '''comment : comment VAR
+               | comment MISC
+               | comment NUMBER
+               | comment STRING'''
     p[1].parts.append(p[2])
     p[0] = p[1]
 
@@ -82,7 +88,8 @@ def p_ask(p):
     p[0] = Ask(p[2])
 
 def p_tell(p):
-    'tell : TELL expressions'
+    '''tell : TELL expressions
+            | TELL expressions NEXT'''
     p[0] = Tell(p[2])
 
 def p_expressions_single(p):

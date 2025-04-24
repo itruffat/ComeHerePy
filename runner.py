@@ -9,7 +9,7 @@ def run_line(line_number, lines:  list[LinkedStatement], comefroms, variables, u
     new_value_found = False
     for to_change in to_be_changed:
         old_value = comefroms[to_change]
-        comefroms[to_change] = evaluate_expression(lines[to_change])
+        comefroms[to_change] = evaluate_expression(lines[to_change].body.expr, variables)
         new_value_found |= old_value != comefroms[to_change]
 
 def move_pointer_forward(line_number, lines, comefroms, end_point):
@@ -17,15 +17,21 @@ def move_pointer_forward(line_number, lines, comefroms, end_point):
         return None
     next_number = lines[line_number].following.number
     jump_to = next_number
+    print(comefroms)
     for key, values in comefroms.items():
-        if next_number in values:
+        if next_number == values:
             jump_to = key
     return jump_to
 
-code = """ NOTE pass
-10 CALL 'msg' pepe
-CALL pepe-1 pepe
-12 TELL pepe"""
+code = """ NOTE Example 1.2: Another way of writing Hello, world
+TELL 72 101 108 108 111 44 32 119 111 114 108 100 10"""
+
+code = """ NOTE Example 4.2: A better conditional message
+    TELL 'Would you like to see a message? (y/n)'
+10  ASK response
+11  TELL 'Hello, world!' NEXT
+ 9  NOTE Dummy label
+    COME FROM 10 + SGN(response - "n")"""
 
 if __name__ == "__main__":
     points, lines, comefroms, variables, update_triggers = source_into_runnable_struct(code)

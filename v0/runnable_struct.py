@@ -4,20 +4,25 @@ from v0.lexer import lexer
 from v0.parser import NumberedStatement, SimpleStatement, ComeFrom, parser
 from v0.linked_statements import LinkedStatement, evaluate_expression
 
-def _link_statements(statements:list[NumberedStatement | SimpleStatement]):
+def _link_statements(statements:list[NumberedStatement | SimpleStatement], with_faux:bool = True):
     linkeds = []
     previous = None
+    faux = 0 if with_faux else None
     for statement in statements:
-        linkeds.append(LinkedStatement(statement, previous))
-        previous = statement
+        linkeds.append(LinkedStatement(statement, previous, faux))
+        faux += 1
+        previous = linkeds[-1]
     for n in range(len(linkeds)-1):
         linkeds[n].set_next(linkeds[n+1])
     return linkeds
 
 def _index_by_line(statements: list[LinkedStatement]):
+    print(statements)
     ordered_statements = {}
     for statement in statements:
         if statement.number in ordered_statements.keys():
+            print(ordered_statements)
+            print(statement.number)
             raise Exception("repeated number")
         else:
             ordered_statements[statement.number] = statement

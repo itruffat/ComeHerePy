@@ -1,9 +1,9 @@
 import ply.lex as lex
 
 tokens = (
-    'NUMBER', 'STRING', 'VAR',
+    'NUMBER', 'STRING', 'VAR', 'MISC',
     'PLUS', 'MINUS', 'TIMES', 'DIV', 'MOD',
-    'LPAREN', 'RPAREN', 'NEXT',
+    'LPAREN', 'RPAREN', 'NEWLINE', 'NEXT',
     'NOTE', 'CALL', 'ASK', 'TELL', 'COME', 'FROM', 'SGN'
 )
 
@@ -24,7 +24,7 @@ def t_SGN(t): r'SGN'; return t
 def t_MOD(t): r'MOD'; return t
 
 def t_STRING(t):
-    r"'[^']*'"
+    r"'[^']*'|\"[^\"]\""
     t.value = t.value[1:-1]
     return t
 
@@ -33,14 +33,24 @@ def t_NUMBER(t):
     t.value = int(t.value)
     return t
 
+def t_NEWLINE(t):
+    r'\n+'
+    t.lexer.lineno += len(t.value)
+    return t
+
+def t_NEXT(t):
+    r'NEXT'
+    t.lexer.lineno += len(t.value)
+    return t
+
 def t_VAR(t):
     r'[a-zA-Z_][a-zA-Z0-9_]*'
     return t
 
-def t_NEXT(t):
-    r'\n+'
-    t.lexer.lineno += len(t.value)
+def t_MISC(t):
+    r'[a-zA-Z0-9_:\.,]+'
     return t
+
 
 t_ignore = ' \t'
 
